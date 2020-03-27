@@ -1,0 +1,11 @@
+Fields needed
+Title,
+Date closing, 
+reference number, 
+solicitation number, 
+region of delivery, 
+all the contact info, 
+description
+
+Solicitation Documents
+Check for english in solicitation document and extract pdf links
