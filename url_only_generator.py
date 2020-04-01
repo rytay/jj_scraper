@@ -16,9 +16,7 @@ import re
 #Beautiful soup
 from bs4 import BeautifulSoup
 
-keywords = set(open("keywords.txt").read().splitlines())
-date = str(datetime.now())
-
+#This class only generates links with your keywords. Might be easier than extracting data.
 
 class ContractCrawlerUrl(CrawlSpider):
     
