@@ -16,10 +16,10 @@ import re
 #Beautiful soup
 from bs4 import BeautifulSoup
 
-keywords = set(open("keywords.txt").read().splitlines())
-date = str(datetime.now())
 
 
+if not os.path.exists('out'):
+    os.makedirs('out')
 class ContractCrawlerUrl(CrawlSpider):
     
     #keyword file
@@ -44,7 +44,7 @@ class ContractCrawlerUrl(CrawlSpider):
             soup = BeautifulSoup(response.text,'html.parser')
             article_text = soup.find("article", {"class":"data-table"}).get_text()
             if any(keyword in article_text for keyword in self.keywords):
-                with open(self.date+'.txt', 'a') as f:
+                with open('out/'+self.date+'.txt', 'a') as f:
                     f.write(response.url+'\n\n')
             return
 
