@@ -55,6 +55,7 @@ def checkNone(item):
         return item.get_text()
 
 
+
 process = CrawlerProcess()
 process.crawl(ContractCrawlerUrl)
 process.start()

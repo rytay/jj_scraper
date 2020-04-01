@@ -102,8 +102,7 @@ process.crawl(ContractCrawler)
 process.start()
 
 #Pretty print for readability
-'''
+
 with open('results.json' ,'w+') as f:
     data=json.load(f)
     f.write(json.dumps(data, indent=1))
-'''
