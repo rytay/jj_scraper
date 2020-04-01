@@ -39,7 +39,7 @@ class ContractCrawler(CrawlSpider):
         'CONCURRENT_REQUESTS_PER_DOMAIN' : str(50),
         'RETRY_ENABLED': 'False',
         'FEED_FORMAT' : 'json',
-        'FEED_URI' : str(date) +'/results.json'
+        'FEED_URI' : 'out/'+str(date) +'/results.json'
     }
 
     name = "contract_crawler"

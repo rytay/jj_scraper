@@ -44,9 +44,9 @@ class ContractCrawlerUrl(CrawlSpider):
             soup = BeautifulSoup(response.text,'html.parser')
             article_text = soup.find("article", {"class":"data-table"}).get_text()
             if any(keyword in article_text for keyword in self.keywords):
-                with open(self.date+'.txt', 'w') as f:
+                with open(self.date+'.txt', 'a') as f:
                     f.write(response.url+'\n\n')
-                yield
+            return
 
 def checkNone(item):
     if item is None:
