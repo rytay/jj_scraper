@@ -16,7 +16,11 @@ import re
 #Beautiful soup
 from bs4 import BeautifulSoup
 
+<<<<<<< HEAD
 
+=======
+#This class only generates links with your keywords. Might be easier than extracting data.
+>>>>>>> aaba9076aff783877ee0bdfb32bb742d6d7a4a77
 
 if not os.path.exists('out'):
     os.makedirs('out')
