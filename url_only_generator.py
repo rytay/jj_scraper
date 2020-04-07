@@ -20,6 +20,23 @@ from bs4 import BeautifulSoup
 
 if not os.path.exists('out'):
     os.makedirs('out')
+
+#Default start page, you can change this
+start_page = "https://buyandsell.gc.ca/procurement-data/search/site?f%5B0%5D=sm_facet_procurement_data%3Adata_data_tender_notice&f%5B1%5D=ss_publishing_status%3ASDS-SS-005"
+while(True):
+    use_start = input('Use preprogammed start page? (y/n), "e" to exit : ').lower()
+    if(use_start == 'n'):
+        start_at = input("Enter the start page for crawler: ")
+        break
+    elif(use_start == 'y'):
+        break
+    elif(use_start == 'e'):
+        print("Exiting...")
+        exit();
+    else:
+        print('Invalid choice. Enter "y" or "n", or "e" to exit (not case sensitive)')
+        continue
+
 class ContractCrawlerUrl(CrawlSpider):
     
     #keyword file
@@ -35,7 +52,7 @@ class ContractCrawlerUrl(CrawlSpider):
 
     name = "contract_crawler_url"
     allowed_domains = ['buyandsell.gc.ca']
-    start_urls = ["https://buyandsell.gc.ca/procurement-data/search/site?f%5B0%5D=sm_facet_procurement_data%3Adata_data_tender_notice&f%5B1%5D=ss_publishing_status%3ASDS-SS-005"]
+    start_urls = [start_at]
     rules = (Rule(LinkExtractor(restrict_xpaths=(['//ul[@class="search-results"]//h2/a','//li[@class="pager-next"]/a'])),callback='parse_item',follow=True),)
     
     def parse_item(self, response: HtmlResponse):
