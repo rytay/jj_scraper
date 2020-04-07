@@ -45,6 +45,8 @@ class ContractCrawlerUrl(CrawlSpider):
             article_text = soup.find("article", {"class":"data-table"}).get_text()
             if any(keyword in article_text for keyword in self.keywords):
                 with open('out/'+self.date+'.txt', 'a') as f:
+                    title = soup.find(id='cont').get_text()
+                    f.write(title+'\n')
                     f.write(response.url+'\n\n')
             return
 
