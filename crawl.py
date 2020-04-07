@@ -37,7 +37,7 @@ DATE = str(datetime.now())
 class ContractCrawler(CrawlSpider):
     
     #keyword file
-    keywords = set(open("keywords.txt").read().splitlines())
+    keywords = set(open("keywords.txt").read().lower().splitlines())
     
     custom_settings = {
         'LOG_LEVEL' : 'INFO',

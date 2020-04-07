@@ -23,7 +23,7 @@ if not os.path.exists('out'):
 class ContractCrawlerUrl(CrawlSpider):
     
     #keyword file
-    keywords = set(open("keywords.txt").read().splitlines())
+    keywords = set(open("keywords.txt").read().lower().splitlines())
     date = str(datetime.now())
     custom_settings = {
         'LOG_LEVEL' : 'INFO',
@@ -42,7 +42,7 @@ class ContractCrawlerUrl(CrawlSpider):
         print(response.url)
         if "search/site" not in response.url:
             soup = BeautifulSoup(response.text,'html.parser')
-            article_text = soup.find("article", {"class":"data-table"}).get_text()
+            article_text = soup.find("article", {"class":"data-table"}).get_text().lower()
             if any(keyword in article_text for keyword in self.keywords):
                 with open('out/'+self.date+'.txt', 'a') as f:
                     title = soup.find(id='cont').get_text()
