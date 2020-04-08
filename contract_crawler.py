@@ -4,6 +4,7 @@ from datetime import datetime
 import json
 import requests
 from collections import OrderedDict
+#Scrapy
 import scrapy
 from scrapy import Request
 from scrapy.spiders import CrawlSpider,Rule
@@ -38,6 +39,8 @@ while(True):
     use_start = input('Use preprogammed start page? (y/n), "e" to exit : ').lower()
     if(use_start == 'n'):
         START_PAGE = input("Enter the start page for crawler: ")
+        if(START_PAGE == 'e'):
+            continue
         break
     elif(use_start == 'y'):
         break
@@ -77,7 +80,7 @@ class ContractCrawler(CrawlSpider):
         if "search/site" not in response.url:
             #unidecode strips the accents of characters
             soup = BeautifulSoup(unidecode(response.text),'html.parser')
-            article_text = soup.find("article", {"class":"data-table"}).get_text()
+            article_text = soup.find("article", {"class":"data-table"}).get_text().lower()
             if any(keyword in article_text for keyword in self.keywords):
                 item = DocItem()
                 item['title'] = soup.find(id='cont').get_text()
@@ -107,7 +110,7 @@ class ContractCrawler(CrawlSpider):
                 #ensures the file is a pdf
                 item['pdf'] = [f for f in files if '.pdf' or '.PDF' in f]
                 item['url'] = response.url
-                yield item
+                return item
 #Checks if the value of item is none and replaces it with a string. Avoids referencing None later on.
 def checkNone(item):
     if item is None:
