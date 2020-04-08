@@ -1,17 +1,11 @@
 import json
 import textwrap
 
-with open('results.json' ,'r+') as f:
-    data=json.load(f)
-    json_string = json.dumps(data,indent=4)
-    f.truncate(0)
-    f.seek(0)
-    f.write(json_string)
-
+#Attempts to make a human readable text file. Not amazing but works alright.
 human = ''
 with open('results.json','r') as json_file:
     data = json.load(json_file)
-   
+   #Format some of the json to include tabs and newlines for readability
     for d in data:
         pdf_string = ''
         for pdf in d['pdf']:
@@ -31,6 +25,7 @@ with open('results.json','r') as json_file:
         
         d['description'] = description
         '''
+        #Write it into a string then 
         human +='''TITLE: {title}
 DATE CLOSING : {date_closing}
 REFERENCE NUMBER {reference_number}
