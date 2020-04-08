@@ -17,14 +17,6 @@ with open('results.json','r') as json_file:
             address_string += '\t'+a+'\n'
             
         d['contact']['address'] = address_string
-        '''
-        lines = textwrap.wrap(d['description'],width=80,fix_sentence_endings=True)
-        description = ''
-        for p in lines:
-            description += p+'\n'
-        
-        d['description'] = description
-        '''
         #Write it into a string then 
         human +='''TITLE: {title}
 DATE CLOSING : {date_closing}

@@ -32,7 +32,7 @@ class DocItem(scrapy.Item):
 DATE = str(datetime.now())
 
 
-#Default start page, you can change this value to change the default
+#Default start page, you can change this value
 START_PAGE = "https://buyandsell.gc.ca/procurement-data/search/site?f%5B0%5D=sm_facet_procurement_data%3Adata_data_tender_notice&f%5B1%5D=ss_publishing_status%3ASDS-SS-005"
 while(True):
     use_start = input('Use preprogammed start page? (y/n), "e" to exit : ').lower()
@@ -68,13 +68,14 @@ class ContractCrawler(CrawlSpider):
     allowed_domains = ['buyandsell.gc.ca']
     #put start url here
     start_urls = [START_PAGE]
+    #Rules for pages that crawler will visit. Must be inside search-results element or pager-next href
     rules = (Rule(LinkExtractor(restrict_xpaths=(['//ul[@class="search-results"]//h2/a','//li[@class="pager-next"]/a'])),callback='parse_item',follow=True),)
     
     #Parse relevant pages and extract their details. Put into output json file
     def parse_item(self, response: HtmlResponse):
         print(response.url)
         if "search/site" not in response.url:
-            #remove unidecode if you want unicode with all accents
+            #unidecode strips the accents of characters
             soup = BeautifulSoup(unidecode(response.text),'html.parser')
             article_text = soup.find("article", {"class":"data-table"}).get_text()
             if any(keyword in article_text for keyword in self.keywords):
@@ -103,7 +104,7 @@ class ContractCrawler(CrawlSpider):
                 if solicitation_parent is not None:
                     for tr in solicitation_parent.findAll('tr', {"class":"odd"}):
                         files.append(tr.find('a').attrs['href'])
-                
+                #ensures the file is a pdf
                 item['pdf'] = [f for f in files if '.pdf' or '.PDF' in f]
                 item['url'] = response.url
                 yield item
@@ -114,7 +115,7 @@ def checkNone(item):
     else:
         return item.get_text()
 
-
+#Start the crawler
 process = CrawlerProcess()
 process.crawl(ContractCrawler)
 process.start()

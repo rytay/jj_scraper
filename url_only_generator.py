@@ -17,7 +17,7 @@ import re
 #Beautiful soup
 from bs4 import BeautifulSoup
 
-
+#create output directory if doesnt exist
 if not os.path.exists('out'):
     os.makedirs('out')
 
@@ -37,11 +37,11 @@ while(True):
         print('Invalid choice. Enter "y" or "n", or "e" to exit (not case sensitive)')
         continue
 
+DATE = str(datetime.now())
 class ContractCrawlerUrl(CrawlSpider):
     
     #keyword file
     keywords = set(open("keywords.txt").read().lower().splitlines())
-    date = str(datetime.now())
     custom_settings = {
         'LOG_LEVEL' : 'INFO',
         'ROBOTSTXT_OBEY': "True",
@@ -53,20 +53,21 @@ class ContractCrawlerUrl(CrawlSpider):
     name = "contract_crawler_url"
     allowed_domains = ['buyandsell.gc.ca']
     start_urls = [START_PAGE]
+    #Rules for pages that crawler will visit. Must be inside search-results element or pager-next href
     rules = (Rule(LinkExtractor(restrict_xpaths=(['//ul[@class="search-results"]//h2/a','//li[@class="pager-next"]/a'])),callback='parse_item',follow=True),)
-    
+    #Write the title and the link to output file
     def parse_item(self, response: HtmlResponse):
         print(response.url)
         if "search/site" not in response.url:
             soup = BeautifulSoup(response.text,'html.parser')
             article_text = soup.find("article", {"class":"data-table"}).get_text().lower()
             if any(keyword in article_text for keyword in self.keywords):
-                with open('out/'+self.date+'.txt', 'a') as f:
+                with open('out/'+DATE+'.txt', 'a') as f:
                     title = soup.find(id='cont').get_text()
                     f.write(title+'\n')
                     f.write(response.url+'\n\n')
             return
-
+#Start the crawler
 process = CrawlerProcess()
 process.crawl(ContractCrawlerUrl)
 process.start()
