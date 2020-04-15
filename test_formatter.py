@@ -41,5 +41,5 @@ PDFs:
     \n\n'''.format_map(d) 
 
     
-with open('final_text.txt','w+') as f:
+with open('formatted_text.txt','w+') as f:
     f.write(human)
