@@ -1,5 +1,5 @@
 # jj_scraper
-Aggregate relevant government contracts for JJs nuclear defense systems
+Aggregate potentially relevant information and webpages for JJ's government tender notices.
 
 * url_generator.py generates urls only
 
